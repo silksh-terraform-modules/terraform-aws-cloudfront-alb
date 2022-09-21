@@ -61,3 +61,7 @@ variable "geo_restriction" {
 variable "restriction_locations" {
   default = ["PL", "US", "GB", "DE", "CA"]
 }
+
+variable "logs_prefix" {
+  default = "cloudfront4alb"
+}

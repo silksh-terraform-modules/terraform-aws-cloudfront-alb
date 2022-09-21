@@ -21,7 +21,7 @@ resource "aws_cloudfront_distribution" "this" {
   logging_config {
     include_cookies = false
     bucket          = "${var.logs_bucket}.s3.amazonaws.com"
-    prefix          = "cloudfront4alb"
+    prefix          = var.logs_prefix
   }
 
   aliases = var.app_domain_names
