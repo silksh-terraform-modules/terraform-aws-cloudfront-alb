@@ -1,3 +1,14 @@
+module "cloudfront_log_storage" {
+  source = "cloudposse/s3-log-storage/aws"
+  # Cloud Posse recommends pinning every module to a specific version
+  version = "0.28.0"
+  name                     = var.logs_bucket
+  acl                      = "log-delivery-write"
+  standard_transition_days = 30
+  glacier_transition_days  = 90
+  expiration_days          = 180
+}
+
 resource "aws_cloudfront_distribution" "this" {
 
   origin {
@@ -20,7 +31,7 @@ resource "aws_cloudfront_distribution" "this" {
 
   logging_config {
     include_cookies = false
-    bucket          = "${var.logs_bucket}.s3.amazonaws.com"
+    bucket          = module.cloudfront_log_storage.bucket_id
     prefix          = var.logs_prefix
   }
 
