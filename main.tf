@@ -31,7 +31,7 @@ resource "aws_cloudfront_distribution" "this" {
 
   logging_config {
     include_cookies = false
-    bucket          = module.cloudfront_log_storage.bucket_id
+    bucket          = module.cloudfront_log_storage.bucket_domain_name
     prefix          = var.logs_prefix
   }
 
