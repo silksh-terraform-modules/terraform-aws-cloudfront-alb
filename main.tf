@@ -27,8 +27,6 @@ resource "aws_cloudfront_distribution" "this" {
   is_ipv6_enabled     = true
   comment             = var.comment
 
-# ustawienie routera reactowego
-
   logging_config {
     include_cookies = false
     bucket          = module.cloudfront_log_storage.bucket_domain_name
