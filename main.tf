@@ -1,4 +1,5 @@
 module "cloudfront_log_storage" {
+  count = var.create_logs_bucket ? 1 : 0
   source = "cloudposse/s3-log-storage/aws"
   # Cloud Posse recommends pinning every module to a specific version
   version = "0.28.0"
@@ -29,7 +30,7 @@ resource "aws_cloudfront_distribution" "this" {
 
   logging_config {
     include_cookies = false
-    bucket          = module.cloudfront_log_storage.bucket_domain_name
+    bucket          = var.create_logs_bucket ? module.cloudfront_log_storage.bucket_domain_name[0] : var.logs_bucket
     prefix          = var.logs_prefix
   }
 

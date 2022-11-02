@@ -65,3 +65,8 @@ variable "restriction_locations" {
 variable "logs_prefix" {
   default = "cloudfront4alb"
 }
+
+variable "create_logs_bucket" {
+  default = true
+  description = "do we have to create logs bucket"
+}
