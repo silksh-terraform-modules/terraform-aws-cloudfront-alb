@@ -1,3 +1,16 @@
+resource "aws_cloudfront_response_headers_policy" "example_headers_policy" {
+  name = "example.${var.tld}_policy"
+
+  custom_headers_config {
+    items {
+      header   = "X-Robots-Tag"
+      override = true
+      value    = "noindex"
+    }
+
+  }
+}
+
 module lb-cloudfront {
 
   source = "github.com/silksh-terraform-modules/terraform-aws-cloudfront-alb?ref=v0.0.1"
@@ -18,6 +31,8 @@ module lb-cloudfront {
   acm_certificate_arn = data.terraform_remote_state.infra.outputs.ssl_cert_us_certificate_arn
   zone_id = data.terraform_remote_state.infra.outputs.ssl_cert_us_zone_id
   comment = "cloudfront endpoint for ALB"
+  ## use if defined `example_headers_policy` earlier
+  response_headers_policy_id = aws_cloudfront_response_headers_policy.example_headers_policy.id
 
   # web_acl_id          = data.terraform_remote_state.cloudfront.outputs.waf_web_acl_arn
 

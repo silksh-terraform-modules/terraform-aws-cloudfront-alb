@@ -70,3 +70,7 @@ variable "create_logs_bucket" {
   default = true
   description = "do we have to create logs bucket"
 }
+
+variable "response_headers_policy_id" {
+  default = ""
+}

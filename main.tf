@@ -30,7 +30,7 @@ resource "aws_cloudfront_distribution" "this" {
 
   logging_config {
     include_cookies = false
-    bucket          = var.create_logs_bucket ? module.cloudfront_log_storage.bucket_domain_name[0] : var.logs_bucket
+    bucket          = var.create_logs_bucket ? module.cloudfront_log_storage[0].bucket_domain_name : var.logs_bucket
     prefix          = var.logs_prefix
   }
 
@@ -40,6 +40,7 @@ resource "aws_cloudfront_distribution" "this" {
     allowed_methods  = ["DELETE", "GET", "HEAD", "OPTIONS", "PATCH", "POST", "PUT"]
     cached_methods   = ["GET", "HEAD"]
     target_origin_id = var.alb_origin_id
+    response_headers_policy_id = length(var.response_headers_policy_id) > 0 ? var.response_headers_policy_id : ""
 
     forwarded_values {
       query_string = true
