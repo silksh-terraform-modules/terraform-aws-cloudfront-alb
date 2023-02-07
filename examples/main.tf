@@ -23,7 +23,7 @@ resource "aws_cloudfront_function" "basicauth" {
 
 module lb-cloudfront {
 
-  source = "github.com/silksh-terraform-modules/terraform-aws-cloudfront-alb?ref=v0.0.1"
+  source = "github.com/silksh-terraform-modules/terraform-aws-cloudfront-alb?ref=v0.0.2"
 
   alb_domain_name = aws_lb.external.dns_name
   
