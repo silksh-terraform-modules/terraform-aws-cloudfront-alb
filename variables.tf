@@ -67,10 +67,31 @@ variable "logs_prefix" {
 }
 
 variable "create_logs_bucket" {
-  default = true
+  default = false
   description = "do we have to create logs bucket"
 }
 
 variable "response_headers_policy_id" {
   default = ""
+}
+
+variable "lambda_association" {
+  type = list(object({
+    event_type = string,
+    include_body = bool,
+    lambda_arn = string
+  }))
+
+  default = null
+  
+}
+
+variable "function_association" {
+  type = list(object({
+    event_type = string,
+    function_arn = string
+  }))
+
+  default = null
+  
 }

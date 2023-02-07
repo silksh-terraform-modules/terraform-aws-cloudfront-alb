@@ -11,6 +11,16 @@ resource "aws_cloudfront_response_headers_policy" "example_headers_policy" {
   }
 }
 
+resource "aws_cloudfront_function" "basicauth" {
+  name    = "basicauth"
+  runtime = "cloudfront-js-1.0"
+  publish = true
+  code    = templatefile("${path.module}/templates/functions/basicauth.js", {
+    # base64 from: `echo -n "user:password" |base64`
+    basicauth_string = "dXNlcjpwYXNzd29yZA=="
+  })
+}
+
 module lb-cloudfront {
 
   source = "github.com/silksh-terraform-modules/terraform-aws-cloudfront-alb?ref=v0.0.1"

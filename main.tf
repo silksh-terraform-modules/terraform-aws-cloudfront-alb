@@ -37,9 +37,9 @@ resource "aws_cloudfront_distribution" "this" {
   aliases = var.app_domain_names
 
   default_cache_behavior {
-    allowed_methods  = ["DELETE", "GET", "HEAD", "OPTIONS", "PATCH", "POST", "PUT"]
-    cached_methods   = ["GET", "HEAD"]
-    target_origin_id = var.alb_origin_id
+    allowed_methods            = ["DELETE", "GET", "HEAD", "OPTIONS", "PATCH", "POST", "PUT"]
+    cached_methods             = ["GET", "HEAD"]
+    target_origin_id           = var.alb_origin_id
     response_headers_policy_id = length(var.response_headers_policy_id) > 0 ? var.response_headers_policy_id : ""
 
     forwarded_values {
@@ -50,6 +50,23 @@ resource "aws_cloudfront_distribution" "this" {
       }
     }
 
+    dynamic "lambda_function_association" {
+      for_each = var.lambda_association == null ? [] : var.lambda_association
+      content {
+        event_type = lambda_function_association.value.event_type
+        include_body = lambda_function_association.value.include_body
+        lambda_arn = lambda_function_association.value.lambda_arn
+      }
+    }
+
+    dynamic "function_association" {
+      for_each = var.function_association == null ? [] : var.function_association
+      content {
+        event_type = function_association.value.event_type
+        function_arn = function_association.value.function_arn
+      }
+    }
+    
     viewer_protocol_policy = "redirect-to-https"
     min_ttl                = var.min_ttl
     default_ttl            = var.default_ttl
